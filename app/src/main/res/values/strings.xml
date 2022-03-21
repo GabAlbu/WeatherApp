@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">WeatherApp2</string>
+    <string name="refresh">Refresh</string>
+
+    <string-array name="spinner_states">
+        <item>Belém</item>
+        <item>Belo Horizonte</item>
+        <item>Boa Vista</item>
+        <item>Brasília</item>
+        <item>Campo Grande</item>
+        <item>Cuiabá</item>
+        <item>Curitiba</item>
+        <item>Florianópolis</item>
+        <item>Fortaleza</item>
+        <item>Goiânia</item>
+        <item>João Pessoa</item>
+        <item>Macapá</item>
+        <item>Maceió</item>
+        <item>Manaus</item>
+        <item>Natal</item>
+        <item>Palmas</item>
+        <item>Porto Alegre</item>
+        <item>Porto Velho</item>
+        <item>Recife</item>
+        <item>Rio Branco</item>
+        <item>Rio de Janeiro</item>
+        <item>Salvador</item>
+        <item>São Luís</item>
+        <item>São Paulo</item>
+        <item>Sergipe</item>
+        <item>Teresina</item>
+        <item>Vitória</item>
+    </string-array>
+</resources>
