@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import com.example.weatherapp2.databinding.ActivityMainBinding
 import com.example.weatherapp2.model.CurrentService
 import com.example.weatherapp2.utils.ToastManager
 import retrofit2.Call
@@ -14,28 +15,33 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     private lateinit var remote: CurrentService
-    private lateinit var spinner: Spinner
-    private lateinit var temperatureTxtView: TextView
-    private lateinit var cityTxtView: TextView
-    private lateinit var buttonRefresh: Button
     private var toastManager: ToastManager = ToastManager()
+
+    private var _binding: ActivityMainBinding? = null
+    private val binding: ActivityMainBinding? = _binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
 
-        temperatureTxtView = findViewById(R.id.tempShow)
-        buttonRefresh = findViewById(R.id.buttonRefresh)
-        cityTxtView = findViewById(R.id.stateShow)
-        spinner = findViewById(R.id.spinner)
-
-        spinner.onItemSelectedListener = this
 
         var mTestArray: Array<String> = resources.getStringArray(R.array.spinner_states)
-        remote = RetrofitClient.createService(CurrentService::class.java)
-        requestTemperature("manaus")
+
+
         //injeção de dependencia ()
         toastManager.toast(this, "asd",Toast.LENGTH_SHORT)
+    }
+
+    fun setupBinding() {
+        binding?.run {
+            remote = RetrofitClient.createService(CurrentService::class.java)
+            requestTemperature("manaus") //colocar para reconhecer a cidade por GPS
+            spinCity.onItemSelectedListener = this@MainActivity
+            bttnRefresh.setOnClickListener {
+                requestTemperature(spinCity.toString())
+            }
+        }
     }
 
     fun requestTemperature(city: String) {
@@ -47,8 +53,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             ) {
                 val body = response.body()
                 body?.current?.temperature
-                temperatureTxtView.text = body?.current?.temperature.toString()
-                buttonRefresh.setOnClickListener {
+                binding?.txtTempNum?.text = body?.current?.temperature.toString()
+                binding?.bttnRefresh?.setOnClickListener {
                     //       this.onResponse()
                 }
             }
@@ -66,13 +72,11 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     @SuppressLint("ResourceType")
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (parent?.id) {
-            R.id.spinner -> {
+            R.id.spin_city -> {
                 val text = parent.getItemAtPosition(position)
-                cityTxtView.text = text.toString()
+                binding?.txtCityName?.text = text.toString()
                 requestTemperature(text.toString())
-
             }
-
         }
     }
 
